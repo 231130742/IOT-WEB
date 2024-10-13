@@ -7,7 +7,7 @@ function setLampu1(on) {
         .then(response => {
             if (response.ok) {
                 console.log(`Lampu 1 ${on ? 'ON' : 'OFF'} success`);
-                lampu1image.src = on ? "./assets/led-on.png" : "./assets/led-off.png";
+                lampu1image.src = on ? "./led-on.png" : "./led-off.png";
                 localStorage.setItem('lampu1Status', on); // Simpan status di localStorage
             } else {
                 console.error('Response error:', response.status);
@@ -22,7 +22,7 @@ function setLampu2(on) {
         .then(response => {
             if (response.ok) {
                 console.log(`Lampu 2 ${on ? 'ON' : 'OFF'} success`);
-                lampu2image.src = on ? "./assets/led-on.png" : "./assets/led-off.png";
+                lampu2image.src = on ? "./led-on.png" : "./led-off.png";
                 localStorage.setItem('lampu2Status', on); // Simpan status di localStorage
             } else {
                 console.error('Response error:', response.status);
@@ -37,8 +37,8 @@ function loadLampuStatus() {
     const lampu2Status = localStorage.getItem('lampu2Status') === 'true'; // Baca status lampu 2
 
     // Atur gambar sesuai dengan status yang disimpan
-    lampu1image.src = lampu1Status ? "./assets/led-on.png" : "./assets/led-off.png";
-    lampu2image.src = lampu2Status ? "./assets/led-on.png" : "./assets/led-off.png";
+    lampu1image.src = lampu1Status ? "./led-on.png" : "./led-off.png";
+    lampu2image.src = lampu2Status ? "./led-on.png" : "./led-off.png";
 }
 
 // Panggil fungsi untuk memuat status lampu saat halaman dimuat
@@ -51,10 +51,10 @@ window.onload = loadLampuStatus;
 
 function setLampu3() {
     lampu3.style.backgroundColor = "red";
-    lampu3image.src = "./assets/led-on.png";
+    lampu3image.src = "./led-on.png";
 }
 
 function setLampu4() {
     lampu4.style.backgroundColor = "red";
-    lampu4image.src = "./assets/led-on.png";
+    lampu4image.src = "./led-on.png";
 }
