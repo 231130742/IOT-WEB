@@ -59,16 +59,45 @@
 //     lampu4image.src = "./assets/led-on.png";
 // }
 
-const BLYNK_AUTH_TOKEN = "2BI4LBNNumG-Wy1wkLjvuXcmFQGBn7QM"; // Token kamu
+const BLYNK_AUTH_TOKEN = "2BI4LBNNumG-Wy1wkLjvuXcmFQGBn7QM"; // Token Blynk Anda
 
-// Fungsi untuk mengubah status lampu via Blynk API
-async function setLampu(virtualPin, state) {
-    const url = `https://blynk.cloud/external/api/update?token=${BLYNK_AUTH_TOKEN}&${virtualPin}=${state ? 1 : 0}`;
+// Fungsi untuk mengambil status lampu dari Blynk
+async function getLampuStatus(virtualPin, imgId, button) {
+    const url = `https://blynk.cloud/external/api/get?token=${BLYNK_AUTH_TOKEN}&${virtualPin}`;
 
     try {
         let response = await fetch(url);
         if (response.ok) {
-            console.log(`Lampu ${virtualPin} berhasil diubah ke ${state ? "ON" : "OFF"}`);
+            const status = await response.text(); // Status: "1" atau "0"
+            const isOn = status === "1";
+
+            // Update gambar dan teks tombol sesuai status
+            document.getElementById(imgId).src = isOn ? "./assets/led-on.png" : "./assets/led-off.png";
+            button.textContent = isOn ? "TURN OFF" : "TURN ON";
+        } else {
+            console.error("Gagal mendapatkan status lampu.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+// Fungsi untuk mengubah status lampu (ON/OFF)
+async function toggleLampu(virtualPin, imgId, button) {
+    const img = document.getElementById(imgId);
+    const currentState = img.src.includes("led-on.png");
+    const newState = !currentState;
+
+    const url = `https://blynk.cloud/external/api/update?token=${BLYNK_AUTH_TOKEN}&${virtualPin}=${newState ? 1 : 0}`;
+
+    try {
+        let response = await fetch(url);
+        if (response.ok) {
+            console.log(`Lampu ${virtualPin} berhasil diubah ke ${newState ? "ON" : "OFF"}`);
+
+            // Update gambar dan teks tombol
+            img.src = newState ? "./assets/led-on.png" : "./assets/led-off.png";
+            button.textContent = newState ? "TURN OFF" : "TURN ON";
         } else {
             console.error("Gagal mengubah status lampu.");
         }
@@ -77,10 +106,8 @@ async function setLampu(virtualPin, state) {
     }
 }
 
-// Event listener untuk kontrol lampu 1
-document.getElementById("lampu1on").addEventListener("click", () => setLampu("V0", true));
-document.getElementById("lampu1off").addEventListener("click", () => setLampu("V0", false));
-
-// Event listener untuk kontrol lampu 2
-document.getElementById("lampu2on").addEventListener("click", () => setLampu("V1", true));
-document.getElementById("lampu2off").addEventListener("click", () => setLampu("V1", false));
+// Panggil fungsi getLampuStatus saat halaman dimuat
+window.onload = function () {
+    getLampuStatus('V0', 'lampu1image', document.getElementById('lampu1toggle'));
+    getLampuStatus('V1', 'lampu2image', document.getElementById('lampu2toggle'));
+};

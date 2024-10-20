@@ -25,15 +25,17 @@
             <div class="led">
                 <img src="./assets/led-off.png" class="led-image" id="lampu1image" />
                 <p class="led-location-text">LAMPU 1</p>
-                <button class="led-submit" id="lampu1on">TURN ON</button>
-                <button class="led-submit" id="lampu1off">TURN OFF</button>
+                <button class="led-submit" id="lampu1toggle" onclick="toggleLampu('V0', 'lampu1image', this)">
+                    TURN ON
+                </button>
             </div>
 
             <div class="led">
                 <img src="./assets/led-off.png" class="led-image" id="lampu2image" />
                 <p class="led-location-text">LAMPU 2</p>
-                <button class="led-submit" id="lampu2on">TURN ON</button>
-                <button class="led-submit" id="lampu2off">TURN OFF</button>
+                <button class="led-submit" id="lampu2toggle" onclick="toggleLampu('V1', 'lampu2image', this)">
+                    TURN ON
+                </button>
             </div>
             <div class="led">
                 <img src="./assets/led-off.png" class="led-image" id="lampu3image" />
