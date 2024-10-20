@@ -1,0 +1,107 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blynk Lamp Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Blynk Lamp Control</h1>
+    <div>
+        <h2>Lamp 1</h2>
+        <button onclick="controlLamp(0, '1')">Turn ON</button>
+        <button onclick="controlLamp(0, '0')">Turn OFF</button>
+    </div>
+    <div>
+        <h2>Lamp 2</h2>
+        <button onclick="controlLamp(1, '1')">Turn ON</button>
+        <button onclick="controlLamp(1, '0')">Turn OFF</button>
+    </div>
+
+    <script>
+        const BLYNK_AUTH_TOKEN = '<2BI4LBNNumG-Wy1wkLjvuXcmFQGBn7QM>'; // Replace with your Blynk Auth Token
+
+        function controlLamp(lampIndex, state) {
+            const virtualPin = lampIndex === 0 ? 'V0' : 'V1';
+            const url = `http://blynk-cloud.com/${BLYNK_AUTH_TOKEN}/update/${virtualPin}?value=${state}`;
+
+            fetch(url)
+                .then(response => {
+                    if (response.ok) {
+                        console.log(`Lamp ${lampIndex + 1} turned ${state === '1' ? 'ON' : 'OFF'}`);
+                        alert(`Lamp ${lampIndex + 1} turned ${state === '1' ? 'ON' : 'OFF'}`);
+                    } else {
+                        throw new Error('Network response was not ok');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+
+<!-- </html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kirim Pesan ke LCD</title>
+  <script type="module">
+    // Import Firebase SDK yang diperlukan
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+
+    // Konfigurasi Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCwlFwQpm3E2QwKemWtKOnifacJ-0eVU4s",
+      authDomain: "database-lcd-iot.firebaseapp.com",
+      databaseURL: "https://database-lcd-iot-default-rtdb.firebaseio.com",
+      projectId: "database-lcd-iot",
+      storageBucket: "database-lcd-iot.appspot.com",
+      messagingSenderId: "337710916019",
+      appId: "1:337710916019:web:16586e21870afd3f352bc6",
+      measurementId: "G-BP5FGDG9LR"
+    };
+
+    // Inisialisasi Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // Fungsi untuk mengirim pesan
+    function sendMessage() {
+      const senderName = document.getElementById('senderName').value;
+      const message = document.getElementById('messageText').value;
+
+      // Simpan pesan dengan nama pengirim
+      set(ref(database, 'lcd/'), {
+        sender: senderName,
+        message: message
+      })
+      .then(() => alert('Pesan dikirim!'))
+      .catch((error) => console.error('Error:', error));
+    }
+  </script>
+</head>
+<body>
+  <h2>Kirim Pesan</h2>
+  <input type="text" id="senderName" placeholder="Nama Pengirim"><br>
+  <input type="text" id="messageText" placeholder="Ketik pesan..."><br>
+  <button onclick="sendMessage()">Kirim</button>
+</body>
+</html>
